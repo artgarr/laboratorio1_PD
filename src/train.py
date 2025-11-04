@@ -82,4 +82,5 @@ summary = {"runs": runs, "best": {"name": top_model_name, "metrics": metrics_sum
 joblib.dump(summary, output_dir / "runs_summary.joblib")
 
 print(f"Modelo ganador: {top_model_name}")
-print(f"RMSE={lowest_rmse:.4f}, R2={metrics_summary[top_model_name]['R2']:.4f}, MSE={metrics_summary[top_model_name]['MSE']:.4f}")
+print(f"RMSE={lowest_rmse:.4f}, R2={metrics_summary[top_model_name]['r2']:.4f}, MSE={metrics_summary[top_model_name]['mse']:.4f}")
+
