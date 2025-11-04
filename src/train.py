@@ -6,6 +6,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 import numpy as np
+from pathlib import Path
 
 # Cargar parámetros desde YAML
 config = yaml.safe_load(open("params.yaml"))
@@ -56,8 +57,11 @@ for model_cfg in config["automl"]["models"]:
         top_model = model
         top_model_name = model_name
 
+output_dir = Path(config['artifacts']['dir'])
+output_dir.mkdir(parents=True, exist_ok=True)
+
 # Guardar mejor modelo y métricas
-joblib.dump(top_model, f"{config['artifacts']['dir']}/best_model.pkl")
+joblib.dump(top_model, output_dir / "best_model.pkl")
 json.dump(metrics_summary, open("metrics.json", "w"), indent=4)
 
 print(f"Modelo ganador: {top_model_name}")
