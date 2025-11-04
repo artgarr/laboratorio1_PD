@@ -54,7 +54,7 @@ for model_cfg in config["automl"]["models"]:
     r2_val = float(r2_score(y_test, predictions))
     mse_val = float(mean_squared_error(y_test, predictions))
 
-    metrics_summary[model_name] = {"RMSE": rmse_val, "R2": r2_val, "MSE": mse_val}
+    metrics_summary[model_name] = {"rmse": rmse_val, "r2": r2_val, "mse": mse_val}
 
     # Guardar info de este modelo en runs
     runs.append({
