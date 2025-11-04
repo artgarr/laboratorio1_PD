@@ -1,0 +1,28 @@
+stages:
+  preprocess:
+    cmd: python src/preprocess.py --input ${data.raw} --output ${data.processed} --params params.yaml
+    deps:                       # dependencias de esta etapa
+      - src/preprocess.py
+      - ${data.raw}
+      - params.yaml
+    outs:                       # outputs generados
+      - ${data.processed}
+
+  train:
+    cmd: python src/train.py --data ${data.processed} --models-config params.yaml --out-dir ${artifacts.dir}
+    deps:
+      - src/train.py
+      - ${data.processed}
+      - params.yaml
+    outs:
+      - ${artifacts.dir}
+
+  evaluate:
+    cmd: python src/evaluate.py --models-dir ${artifacts.dir} --report results.csv --metrics metrics.json
+    deps:
+      - src/evaluate.py
+      - ${artifacts.dir}
+    outs:
+      - results.csv
+    metrics:                    # métricas que DVC puede trackear y comparar
+      - metrics.json

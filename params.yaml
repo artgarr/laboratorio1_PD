@@ -1,0 +1,37 @@
+data:
+  raw: data/dataset_v1.csv          # Ruta al dataset original
+  processed: data/processed.parquet # Ruta al dataset procesado
+
+artifacts:
+  dir: artifacts                    # Carpeta donde se guardarán las salidas (modelos, métricas, plots, etc.)
+
+preprocess:
+  target_column: MedHouseVal        # Columna objetivo
+  drop_columns: []                  # Columnas a eliminar
+  impute_strategy: median           # Estrategia de imputación (mean, median, most_frequent)
+  onehot_max_cardinality: 50        # Máx. categorías para aplicar one-hot encoding
+  scale_numeric: true               # Escalar variables numéricas
+  test_size: 0.2                    # Proporción de test
+  random_state: 42                  # Seeds
+
+automl:
+  cv_folds: 5                       # Número de folds para validación cruzada
+  scoring: rmse                     # Métrica principal de evaluación
+  models:
+    - name: linear
+      class: sklearn.linear_model.LinearRegression
+      params: {}                    # Sin hiperparámetros adicionales
+    - name: random_forest
+      class: sklearn.ensemble.RandomForestRegressor
+      params:
+        n_estimators: 200
+        max_depth: 5
+        min_samples_leaf: 1
+        random_state: 42
+    - name: gradient_boosting
+      class: sklearn.ensemble.GradientBoostingRegressor
+      params:
+        n_estimators: 200
+        learning_rate: 0.05
+        max_depth: 5
+        random_state: 42
