@@ -25,6 +25,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=config["preprocess"]["random_state"]
 )
 
+runs = []  # para guardar info de cada modelo
 metrics_summary = {}
 top_model = None
 lowest_rmse = float("inf")
@@ -52,6 +53,17 @@ for model_cfg in config["automl"]["models"]:
 
     metrics_summary[model_name] = {"RMSE": rmse_val, "R2": r2_val, "MSE": mse_val}
 
+    # Guardar info de este modelo en runs
+    runs.append({
+        "name": model_name,
+        "cv_metrics": {"rmse": rmse_val, "mae": None, "r2": r2_val},  # simplificado
+        "test_metrics": {"rmse": rmse_val, "mae": None, "r2": r2_val},
+        "model_path": f"{config['artifacts']['dir']}/{model_name}.pkl"
+    })
+
+    # Guardar modelo individual
+    joblib.dump(model, Path(config['artifacts']['dir']) / f"{model_name}.pkl")
+
     if rmse_val < lowest_rmse:
         lowest_rmse = rmse_val
         top_model = model
@@ -64,6 +76,9 @@ output_dir.mkdir(parents=True, exist_ok=True)
 joblib.dump(top_model, output_dir / "best_model.pkl")
 json.dump(metrics_summary, open("metrics.json", "w"), indent=4)
 
+# Guardar runs_summary.joblib para evaluate.py
+summary = {"runs": runs, "best": {"name": top_model_name, "metrics": metrics_summary[top_model_name]}}
+joblib.dump(summary, output_dir / "runs_summary.joblib")
+
 print(f"Modelo ganador: {top_model_name}")
 print(f"RMSE={lowest_rmse:.4f}, R2={metrics_summary[top_model_name]['R2']:.4f}, MSE={metrics_summary[top_model_name]['MSE']:.4f}")
-
