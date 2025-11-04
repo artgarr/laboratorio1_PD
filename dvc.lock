@@ -1,0 +1,45 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python src/preprocess.py --input data/dataset_v1.csv --output 
+      data/processed.parquet --params params.yaml
+    deps:
+    - path: data/dataset_v1.csv
+      hash: md5
+      md5: fa9fe4cf24f70b69ac65fb33062ddf34
+      size: 1915795
+    - path: params.yaml
+      hash: md5
+      md5: cdf29960d1e830aa847633e9b5fd1ab6
+      size: 1473
+    - path: src/preprocess.py
+      hash: md5
+      md5: 1a75765544a23bfa8eaa9a87e0e06db0
+      size: 405
+    outs:
+    - path: data/processed.parquet
+      hash: md5
+      md5: 9a2b8172906a0ab9676a81f01a908368
+      size: 1889448
+  train:
+    cmd: python src/train.py --data data/processed.parquet --models-config 
+      params.yaml --out-dir artifacts
+    deps:
+    - path: data/processed.parquet
+      hash: md5
+      md5: 9a2b8172906a0ab9676a81f01a908368
+      size: 1889448
+    - path: params.yaml
+      hash: md5
+      md5: cdf29960d1e830aa847633e9b5fd1ab6
+      size: 1473
+    - path: src/train.py
+      hash: md5
+      md5: c1c5e07d10501faaf582a04458ae747a
+      size: 2344
+    outs:
+    - path: artifacts
+      hash: md5
+      md5: 460c2a0feda4b9e0a879a643979b915d.dir
+      size: 910968
+      nfiles: 1

@@ -31,6 +31,9 @@ top_model = None
 lowest_rmse = float("inf")
 top_model_name = ""
 
+output_dir = Path(config['artifacts']['dir'])
+output_dir.mkdir(parents=True, exist_ok=True)
+
 # Entrenar modelos definidos en params.yaml
 for model_cfg in config["automl"]["models"]:
     model_name = model_cfg["name"]
@@ -69,8 +72,6 @@ for model_cfg in config["automl"]["models"]:
         top_model = model
         top_model_name = model_name
 
-output_dir = Path(config['artifacts']['dir'])
-output_dir.mkdir(parents=True, exist_ok=True)
 
 # Guardar mejor modelo y métricas
 joblib.dump(top_model, output_dir / "best_model.pkl")
