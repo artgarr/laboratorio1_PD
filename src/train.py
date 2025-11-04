@@ -2,7 +2,7 @@ import pandas as pd
 import yaml, json
 import joblib
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 import numpy as np
@@ -53,15 +53,16 @@ for model_cfg in config["automl"]["models"]:
     rmse_val = float(np.sqrt(mean_squared_error(y_test, predictions)))
     r2_val = float(r2_score(y_test, predictions))
     mse_val = float(mean_squared_error(y_test, predictions))
+    mae_val = float(mean_absolute_error(y_test, predictions))
 
-    metrics_summary[model_name] = {"rmse": rmse_val, "r2": r2_val, "mse": mse_val}
+    metrics_summary[model_name] = {"rmse": rmse_val, "r2": r2_val, "mse": mse_val, "mae": mae_val}
 
     # Guardar info de este modelo en runs
     runs.append({
         "name": model_name,
-        "cv_metrics": {"rmse": rmse_val, "mae": None, "r2": r2_val},  # simplificado
-        "test_metrics": {"rmse": rmse_val, "mae": None, "r2": r2_val},
-        "model_path": f"{config['artifacts']['dir']}/{model_name}.pkl"
+        "cv_metrics": {"rmse": rmse_val, "mae": mae_val, "r2": r2_val, "mse": mse_val},
+        "test_metrics": {"rmse": rmse_val, "mae": mae_val, "r2": r2_val, "mse": mse_val},
+        "model_path": str(output_dir / f"{model_name}.pkl")
     })
 
     # Guardar modelo individual
@@ -82,5 +83,5 @@ summary = {"runs": runs, "best": {"name": top_model_name, "metrics": metrics_sum
 joblib.dump(summary, output_dir / "runs_summary.joblib")
 
 print(f"Modelo ganador: {top_model_name}")
-print(f"RMSE={lowest_rmse:.4f}, R2={metrics_summary[top_model_name]['r2']:.4f}, MSE={metrics_summary[top_model_name]['mse']:.4f}")
+print(f"RMSE={lowest_rmse:.4f}, R2={metrics_summary[top_model_name]['r2']:.4f}, MSE={metrics_summary[top_model_name]['mse']:.4f}, MAE={metrics_summary[top_model_name]['mae']:.4f}")
 
