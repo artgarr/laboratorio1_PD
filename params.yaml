@@ -1,5 +1,5 @@
 data:
-  raw: data/dataset_v2.csv          # Ruta al dataset original
+  raw: data/dataset_v3.csv          # Ruta al dataset original
   processed: data/processed.parquet # Ruta al dataset procesado
 
 artifacts:
