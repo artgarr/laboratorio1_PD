@@ -1,0 +1,6 @@
+{
+  "best_model": "gradient_boosting",
+  "best_rmse": 0.4852469244760947,
+  "best_mae": 0.3295030295991188,
+  "best_r2": 0.8234599638198205
+}
