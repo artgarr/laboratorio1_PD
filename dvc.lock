@@ -1,16 +1,16 @@
 schema: '2.0'
 stages:
   preprocess:
-    cmd: python src/preprocess.py --input data/dataset_v1.csv --output 
+    cmd: python src/preprocess.py --input data/dataset_v2.csv --output 
       data/processed.parquet --params params.yaml
     deps:
-    - path: data/dataset_v1.csv
+    - path: data/dataset_v2.csv
       hash: md5
-      md5: fa9fe4cf24f70b69ac65fb33062ddf34
-      size: 1915795
+      md5: d5d2b512960cb9af7b357126fde1e270
+      size: 1848015
     - path: params.yaml
       hash: md5
-      md5: cdf29960d1e830aa847633e9b5fd1ab6
+      md5: 43b47c5a8514dab4ab6497cd2d59e570
       size: 1473
     - path: src/preprocess.py
       hash: md5
@@ -19,19 +19,19 @@ stages:
     outs:
     - path: data/processed.parquet
       hash: md5
-      md5: 9a2b8172906a0ab9676a81f01a908368
-      size: 1889448
+      md5: bad3fe5f43fc6a0d8652fcd7a1e120a8
+      size: 1822601
   train:
     cmd: python src/train.py --data data/processed.parquet --models-config 
       params.yaml --out-dir artifacts
     deps:
     - path: data/processed.parquet
       hash: md5
-      md5: 9a2b8172906a0ab9676a81f01a908368
-      size: 1889448
+      md5: bad3fe5f43fc6a0d8652fcd7a1e120a8
+      size: 1822601
     - path: params.yaml
       hash: md5
-      md5: cdf29960d1e830aa847633e9b5fd1ab6
+      md5: 43b47c5a8514dab4ab6497cd2d59e570
       size: 1473
     - path: src/train.py
       hash: md5
@@ -40,8 +40,8 @@ stages:
     outs:
     - path: artifacts
       hash: md5
-      md5: d9e4bce288c934704df564f9073de2ed.dir
-      size: 2793246
+      md5: 9d7c2ffeca7f7aab9b426cf925a2c7d6.dir
+      size: 2780718
       nfiles: 5
   evaluate:
     cmd: python src/evaluate.py --models-dir artifacts --report results.csv 
@@ -49,8 +49,8 @@ stages:
     deps:
     - path: artifacts
       hash: md5
-      md5: d9e4bce288c934704df564f9073de2ed.dir
-      size: 2793246
+      md5: 9d7c2ffeca7f7aab9b426cf925a2c7d6.dir
+      size: 2780718
       nfiles: 5
     - path: src/evaluate.py
       hash: md5
@@ -59,9 +59,9 @@ stages:
     outs:
     - path: metrics.json
       hash: md5
-      md5: 6b15e26dd8b85220a64522b1461db99d
+      md5: 3521813870c4696957640ca897e90a8c
       size: 141
     - path: results.csv
       hash: md5
-      md5: e6c23a92af8a4f9a3c89b8639a98dec8
-      size: 529
+      md5: 54504173738c71dfa033ddd36d15d47c
+      size: 531
