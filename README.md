@@ -28,7 +28,7 @@ Después, actualiza el archivo `params.yaml` con el nuevo nombre del dataset:
 ## Ejecución del pipeline  
 Ejecuta el pipeline completo con:  
 `dvc repro`  
-Esto correrá las etapas `preprocess`, `train` y `evaluate`, que limpian los datos, entrenan los modelos definidos en `params.yaml` y generan las métricas en la carpeta local de artifacts (`metrics.json`) y el reporte (`results.csv`).
+Esto correrá las etapas `preprocess`, `train` y `evaluate`, que limpian los datos, entrenan los modelos definidos en `params.yaml` y generan las métricas en la carpeta local (`metrics.json`) y el reporte (`results.csv`).
 
 ## Visualización y comparación de métricas  
 Para ver las métricas actuales, usa:  
